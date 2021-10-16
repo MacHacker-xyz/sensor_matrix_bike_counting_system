@@ -11,6 +11,20 @@ window.geometry('1100x600')
 window.resizable(width=False, height=False)
 
 
+def show_measurement():
+    if Table.SHOW_MEASUREMENT == True:
+        Table.SHOW_MEASUREMENT = False
+    elif Table.SHOW_MEASUREMENT == False:
+        Table.SHOW_MEASUREMENT = True
+
+
+def show_prediction():
+    if Table.SHOW_PREDICTION == True:
+        Table.SHOW_PREDICTION  = False
+    elif Table.SHOW_PREDICTION == False:
+        Table.SHOW_PREDICTION = True
+
+
 
 canvas = tk.Canvas(
     window,
@@ -63,7 +77,7 @@ scale_x = tk.Scale(
 
 scale_x.place(
     x = WIDTH/2.0,
-    y = 550,
+    y = 530,
     anchor = 'nw'
 )
 
@@ -101,7 +115,8 @@ position.place(
 number = tk.Label(
     window,
     text = '',
-    font=tkFont.Font(family='ComicSansMS', size=20, weight=tkFont.BOLD)
+    font=tkFont.Font(family='ComicSansMS', size=30, weight=tkFont.BOLD),
+    fg = "green"
 )
 
 number.place(
@@ -110,10 +125,34 @@ number.place(
     anchor = 'nw'
 )
 
+button1 = tk.Button(
+    text="显示测量",
+    command=show_prediction,
+    font=tkFont.Font(family='ComicSansMS', size=20, weight=tkFont.BOLD)
+)
+
+button2 = tk.Button(
+    text="显示预测",
+    command=show_measurement,
+    font=tkFont.Font(family='ComicSansMS', size=20, weight=tkFont.BOLD)
+)
+
+button1.place(
+    x = 100,
+    y = 550
+)
+
+button2.place(
+    x = 300,
+    y = 550
+)
+
 
 
 # initial another thread to measure the pressure distribution
-thread = threading.Thread(target=test.From, args=(window,scale_x,scale_y,number))
+Table = test.From(window,50,50,scale_x,scale_y,number)
+
+thread = threading.Thread(target=Table.update)
 thread.setDaemon(True)
 thread.start()
 

@@ -36,24 +36,27 @@ class Point():
         temp1 = (self.line[1][0]-self.line[1][1])*(y1-self.line[0][0])-(x1-self.line[1][0])*(self.line[0][0]-self.line[0][1])
         temp2 = (self.line[1][0]-self.line[1][1])*(y2-self.line[0][0])-(x2-self.line[1][0])*(self.line[0][0]-self.line[0][1])
         
-        if x1>=0 and x1<100 and x2>=0 and x2<100 and y1>=0 and y1<100 and y2>=0 and y2<100:
-            if temp1*temp2<=0:
+        if x1>=0 and x1<self.tracker.width and x2>=0 and x2<self.tracker.width and y1>=0 and y1<self.tracker.height and y2>=0 and y2<self.tracker.height:
+            if temp1*temp2<0:
                 if temp1>0:
                     self.tracker.right_num+=1
                     self.tracker.total_num+=1
-                elif temp2>=0:
+                elif temp2>0:
                     self.tracker.left_num+=1
                     self.tracker.total_num+=1
+
             
 
 class Tracker():
-    def __init__(self,line):
+    def __init__(self,line,height,width):
         self.points = []
         self.line = line #[[x1,x2],[y1,y2]]
         self.total_num = 0
         self.left_num = 0
         self.right_num = 0
         self.count = 0
+        self.height = height
+        self.width = width
         
     def track(self,new_points):
         # new_points形如[(1,2),(10,10)]记录个点的位置
